@@ -34,7 +34,8 @@ const ProjectInformationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isAddingMember, setIsAddingMember] = useState(false);
     const [showTeamMembersDropdown, setShowTeamMembersDropdown] = useState(false);
-    const [logoFile, setLogoFile] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
 const [logoPreview, setLogoPreview] = useState('');
   const fetchTeamMembers = async () => {
     setLoadingTeamMembers(true);
@@ -288,6 +289,7 @@ const handleLogoUpload = (e) => {
   
   const removeLogoFile = () => {
     setLogoFile(null);
+    setShowPreview(false);
     setLogoPreview('');
     handleInputChange('companyLogo', null);
     const fileInput = document.getElementById('logo-upload');
@@ -382,41 +384,48 @@ const handleLogoUpload = (e) => {
         </div>
   
         <div className="relative z-10 p-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm  mx-auto p-6 bg-white rounded-lg shadow-md border border-gray-100">
-       
-            <div className="space-y-6">
-        
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Client Code <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.clientCode}
-                  onChange={(e) =>
-                    handleInputChange("clientCode", e.target.value)
-                  }
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                  focus:border-transparent transition-all duration-200 ${
-                    errors.clientCode
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                  placeholder="Enter client code"
-                />
-                {errors.clientCode && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1"></span>
-                    {errors.clientCode}
-                  </p>
-                )}
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 text-sm mx-auto p-6 bg-white rounded-lg shadow-md border border-gray-100">
+  
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Client Code <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      value={formData.clientCode}
+      onChange={(e) =>
+        handleInputChange("clientCode", e.target.value)
+      }
+      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+      focus:border-transparent transition-all duration-200 ${
+        errors.clientCode
+          ? "border-red-400 bg-red-50"
+          : "border-gray-300 hover:border-gray-400"
+      }`}
+      placeholder="Enter client code"
+    />
+    {errors.clientCode && (
+      <p className="text-red-500 text-xs mt-1 flex items-center">
+        <span className="mr-1"></span>
+        {errors.clientCode}
+      </p>
+    )}
+  </div>
 
-      
 <div className="space-y-1">
-  <label htmlFor="logo-upload" className="block font-semibold text-sm text-gray-800">
-    Company Logo
-  </label>
+  <div className="flex items-center justify-between">
+    <label htmlFor="logo-upload" className="block font-semibold text-sm text-gray-800">
+      Company Logo
+    </label>
+    {logoPreview && (
+      <button
+        onClick={() => setShowPreview(!showPreview)}
+        className="text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
+      >
+        {showPreview ? 'Hide Preview' : 'Show Preview'}
+      </button>
+    )}
+  </div>
 
   <div className="relative pt-1">
     <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
@@ -433,395 +442,386 @@ const handleLogoUpload = (e) => {
     />
   </div>
 
- {logoPreview && (
-  <div className="mt-3">
-    <p className="text-sm text-gray-500 mb-1">Preview:</p>
+  {logoPreview && showPreview && (
+    <div className="mt-3">
+      <p className="text-sm text-gray-500 mb-1">Preview:</p>
 
-    <div className="relative w-20 h-20 border border-gray-300 rounded-md overflow-hidden bg-gray-50 shadow-sm">
-      <img
-        src={logoPreview}
-        alt="Logo Preview"
-        className="w-full h-full object-contain"
-      />
+      <div className="relative w-20 h-20 border border-gray-300 rounded-md overflow-hidden bg-gray-50 shadow-sm">
+        <img
+          src={logoPreview}
+          alt="Logo Preview"
+          className="w-full h-full object-contain"
+        />
 
-      <button
-        onClick={removeLogoFile}
-        className="absolute top-1 right-1 bg-white text-gray-700 hover:bg-red-500 hover:text-white border border-gray-300 hover:border-red-600 rounded-full p-[2px] shadow-md transition-all duration-200"
-        title="Remove Logo"
-      >
-        <X size={12} strokeWidth={2} />
-      </button>
+        <button
+          onClick={removeLogoFile}
+          className="absolute top-1 right-1 bg-white text-gray-700 hover:bg-red-500 hover:text-white border border-gray-300 hover:border-red-600 rounded-full p-[2px] shadow-md transition-all duration-200"
+          title="Remove Logo"
+        >
+          <X size={12} strokeWidth={2} />
+        </button>
+      </div>
     </div>
+  )}
+</div>
+
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Company Name <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      value={formData.companyName}
+      onChange={(e) =>
+        handleInputChange("companyName", e.target.value)
+      }
+      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+      focus:border-transparent transition-all duration-200 ${
+        errors.companyName
+          ? "border-red-400 bg-red-50"
+          : "border-gray-300 hover:border-gray-400"
+      }`}
+      placeholder="Enter company name"
+    />
+    {errors.companyName && (
+      <p className="text-red-500 text-xs mt-1 flex items-center">
+        <span className="mr-1"></span>
+        {errors.companyName}
+      </p>
+    )}
   </div>
-)}
-</div>        
-     
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Company Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.companyName}
-                  onChange={(e) =>
-                    handleInputChange("companyName", e.target.value)
-                  }
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                  focus:border-transparent transition-all duration-200 ${
-                    errors.companyName
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                  placeholder="Enter company name"
-                />
-                {errors.companyName && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1"></span>
-                    {errors.companyName}
-                  </p>
-                )}
-              </div>
 
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Project Name/No. <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      value={formData.projectName}
+      onChange={(e) =>
+        handleInputChange("projectName", e.target.value)
+      }
+      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+      focus:border-transparent transition-all duration-200 ${
+        errors.projectName
+          ? "border-red-400 bg-red-50"
+          : "border-gray-300 hover:border-gray-400"
+      }`}
+      placeholder="Enter project name"
+    />
+    {errors.projectName && (
+      <p className="text-red-500 text-xs mt-1 flex items-center">
+        <span className="mr-1"></span>
+        {errors.projectName}
+      </p>
+    )}
+  </div>
 
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Project Name/No. <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.projectName}
-                  onChange={(e) =>
-                    handleInputChange("projectName", e.target.value)
-                  }
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                  focus:border-transparent transition-all duration-200 ${
-                    errors.projectName
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                  placeholder="Enter project name"
-                />
-                {errors.projectName && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1"></span>
-                    {errors.projectName}
-                  </p>
-                )}
-              </div>
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Type of Project
+    </label>
+    <Menu as="div" className="relative">
+      <MenuButton className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400 transition-all duration-200">
+        <span className="text-gray-900">
+          {formData.typeOfProject}
+        </span>
+        <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+      </MenuButton>
+      <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
+        {projectTypeOptions.map((option) => (
+          <MenuItem key={option}>
+            {({ active }) => (
+              <button
+                onClick={() =>
+                  handleInputChange("typeOfProject", option)
+                }
+                className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
+                  active
+                    ? "bg-blue-50 text-blue-700"
+                    : "text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                {option}
+              </button>
+            )}
+          </MenuItem>
+        ))}
+      </MenuItems>
+    </Menu>
+  </div>
 
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Type of Project
-                </label>
-                <Menu as="div" className="relative">
-                  <MenuButton className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400 transition-all duration-200">
-                    <span className="text-gray-900">
-                      {formData.typeOfProject}
-                    </span>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-                  </MenuButton>
-                  <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
-                    {projectTypeOptions.map((option) => (
-                      <MenuItem key={option}>
-                        {({ active }) => (
-                          <button
-                            onClick={() =>
-                              handleInputChange("typeOfProject", option)
-                            }
-                            className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
-                              active
-                                ? "bg-blue-50 text-blue-700"
-                                : "text-gray-900 hover:bg-gray-50"
-                            }`}
-                          >
-                            {option}
-                          </button>
-                        )}
-                      </MenuItem>
-                    ))}
-                  </MenuItems>
-                </Menu>
-              </div>
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      PV Project Manager
+    </label>
+    <Menu as="div" className="relative">
+      <MenuButton className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400 transition-all duration-200">
+        <span className="text-gray-900">
+          {formData.pvProjectManager}
+        </span>
+        <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+      </MenuButton>
+      <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
+        {projectManagerOptions.map((option) => (
+          <MenuItem key={option}>
+            {({ active }) => (
+              <button
+                onClick={() =>
+                  handleInputChange("pvProjectManager", option)
+                }
+                className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
+                  active
+                    ? "bg-blue-50 text-blue-700"
+                    : "text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                {option}
+              </button>
+            )}
+          </MenuItem>
+        ))}
+      </MenuItems>
+    </Menu>
+  </div>
 
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Start Date <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="date"
+      value={formData.startDate}
+      onChange={(e) =>
+        handleInputChange("startDate", e.target.value)
+      }
+      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+      focus:border-transparent transition-all duration-200 ${
+        errors.startDate
+          ? "border-red-400 bg-red-50"
+          : "border-gray-300 hover:border-gray-400"
+      }`}
+    />
+    {errors.startDate && (
+      <p className="text-red-500 text-xs mt-1 flex items-center">
+        <span className="mr-1"></span>
+        {errors.startDate}
+      </p>
+    )}
+  </div>
 
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  PV Project Manager
-                </label>
-                <Menu as="div" className="relative">
-                  <MenuButton className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400 transition-all duration-200">
-                    <span className="text-gray-900">
-                      {formData.pvProjectManager}
-                    </span>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-                  </MenuButton>
-                  <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
-                    {projectManagerOptions.map((option) => (
-                      <MenuItem key={option}>
-                        {({ active }) => (
-                          <button
-                            onClick={() =>
-                              handleInputChange("pvProjectManager", option)
-                            }
-                            className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
-                              active
-                                ? "bg-blue-50 text-blue-700"
-                                : "text-gray-900 hover:bg-gray-50"
-                            }`}
-                          >
-                            {option}
-                          </button>
-                        )}
-                      </MenuItem>
-                    ))}
-                  </MenuItems>
-                </Menu>
-              </div>
-            </div>
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      End Date <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="date"
+      value={formData.endDate}
+      onChange={(e) => handleInputChange("endDate", e.target.value)}
+      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+      focus:border-transparent transition-all duration-200 ${
+        errors.endDate
+          ? "border-red-400 bg-red-50"
+          : "border-gray-300 hover:border-gray-400"
+      }`}
+    />
+    {errors.endDate && (
+      <p className="text-red-500 text-xs mt-1 flex items-center">
+        <span className="mr-1"></span>
+        {errors.endDate}
+      </p>
+    )}
+  </div>
 
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Department <span className="text-red-500">*</span>
+    </label>
+    <Menu as="div" className="relative">
+      <MenuButton
+        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+          focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400
+          transition-all duration-200 ${
+            errors.department
+              ? "border-red-400 bg-red-50"
+              : "border-gray-300"
+          }`}
+      >
+        <span
+          className={
+            formData.department ? "text-gray-900" : "text-gray-500"
+          }
+        >
+          {formData.department || "Select Department"}
+        </span>
+        <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+      </MenuButton>
+      <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
+        {departmentOptions.map((option) => (
+          <MenuItem key={option.value}>
+            {({ active }) => (
+              <button
+                onClick={() =>
+                  handleInputChange("department", option.value)
+                }
+                className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
+                  active
+                    ? "bg-blue-50 text-blue-700"
+                    : "text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                {option.label}
+              </button>
+            )}
+          </MenuItem>
+        ))}
+      </MenuItems>
+    </Menu>
+    {errors.department && (
+      <p className="text-red-500 text-xs mt-1 flex items-center">
+        <span className="mr-1"></span>
+        {errors.department}
+      </p>
+    )}
+  </div>
 
-            <div className="space-y-6">
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Allotted Billing Hours <span className="text-red-500">*</span>
+    </label>
+    <input
+      type="number"
+      value={formData.allottedBillingHours}
+      onChange={(e) =>
+        handleInputChange("allottedBillingHours", e.target.value)
+      }
+      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
+      focus:border-transparent transition-all duration-200 ${
+        errors.allottedBillingHours
+          ? "border-red-400 bg-red-50"
+          : "border-gray-300 hover:border-gray-400"
+      }`}
+      placeholder="Enter billing hours"
+      min="0"
+      step="0.5"
+    />
+    {errors.allottedBillingHours && (
+      <p className="text-red-500 text-xs mt-1 flex items-center">
+        <span className="mr-1"></span>
+        {errors.allottedBillingHours}
+      </p>
+    )}
+  </div>
 
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Start Date <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  value={formData.startDate}
-                  onChange={(e) =>
-                    handleInputChange("startDate", e.target.value)
-                  }
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                  focus:border-transparent transition-all duration-200 ${
-                    errors.startDate
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                />
-                {errors.startDate && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1"></span>
-                    {errors.startDate}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  End Date <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  value={formData.endDate}
-                  onChange={(e) => handleInputChange("endDate", e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                  focus:border-transparent transition-all duration-200 ${
-                    errors.endDate
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                />
-                {errors.endDate && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1"></span>
-                    {errors.endDate}
-                  </p>
-                )}
-              </div>
-
-
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Department <span className="text-red-500">*</span>
-                </label>
-                <Menu as="div" className="relative">
-                  <MenuButton
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                      focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400
-                      transition-all duration-200 ${
-                        errors.department
-                          ? "border-red-400 bg-red-50"
-                          : "border-gray-300"
-                      }`}
-                  >
-                    <span
-                      className={
-                        formData.department ? "text-gray-900" : "text-gray-500"
-                      }
-                    >
-                      {formData.department || "Select Department"}
-                    </span>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-                  </MenuButton>
-                  <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
-                    {departmentOptions.map((option) => (
-                      <MenuItem key={option.value}>
-                        {({ active }) => (
-                          <button
-                            onClick={() =>
-                              handleInputChange("department", option.value)
-                            }
-                            className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
-                              active
-                                ? "bg-blue-50 text-blue-700"
-                                : "text-gray-900 hover:bg-gray-50"
-                            }`}
-                          >
-                            {option.label}
-                          </button>
-                        )}
-                      </MenuItem>
-                    ))}
-                  </MenuItems>
-                </Menu>
-                {errors.department && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1"></span>
-                    {errors.department}
-                  </p>
-                )}
-              </div>
-
-
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Allotted Billing Hours <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  value={formData.allottedBillingHours}
-                  onChange={(e) =>
-                    handleInputChange("allottedBillingHours", e.target.value)
-                  }
-                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500
-                  focus:border-transparent transition-all duration-200 ${
-                    errors.allottedBillingHours
-                      ? "border-red-400 bg-red-50"
-                      : "border-gray-300 hover:border-gray-400"
-                  }`}
-                  placeholder="Enter billing hours"
-                  min="0"
-                  step="0.5"
-                />
-                {errors.allottedBillingHours && (
-                  <p className="text-red-500 text-xs mt-1 flex items-center">
-                    <span className="mr-1"></span>
-                    {errors.allottedBillingHours}
-                  </p>
-                )}
-              </div>
-
-              <div className="relative">
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Team Members
-                  {loadingTeamMembers && (
-                    <Loader className="inline ml-2 animate-spin" size={16} />
-                  )}
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setShowTeamMembersDropdown((prev) => !prev)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white flex justify-between items-center
-                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400
-                    transition-all duration-200"
-                >
-                  <span className="text-gray-900">
-                    {formData.teamMembers.length > 0
-                      ? getSelectedMemberNames()
-                      : "Select team members"}
-                  </span>
-                  <ChevronDownIcon
-                    className={`w-5 h-5 text-gray-500 transform transition-transform duration-200
-                      ${showTeamMembersDropdown ? "rotate-180" : ""}`}
-                  />
-                </button>
-                {showTeamMembersDropdown && (
-                  <div className="absolute left-0 right-0 mt-1 border border-gray-200 rounded-lg p-3 max-h-48 overflow-y-auto bg-white shadow-lg z-30">
-                    {loadingTeamMembers ? (
-                      <div className="flex items-center justify-center py-3">
-                        <Loader className="animate-spin" size={20} />
-                        <span className="ml-2 text-gray-500 text-sm">
-                          Loading team members...
-                        </span>
-                      </div>
-                    ) : teamMembersDB.length > 0 ? (
-                      teamMembersDB.map((member) => (
-                        <label
-                          key={member._id || member.id}
-                          className="flex items-center space-x-3 py-2 cursor-pointer hover:bg-gray-50 rounded text-sm transition-colors duration-150"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={formData.teamMembers.includes(
-                              member._id || member.id
-                            )}
-                            onChange={() =>
-                              handleTeamMemberToggle(member._id || member.id)
-                            }
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
-                          />
-                          <span className="text-gray-900">
-                            {member.firstName} {member.lastName}
-                          </span>
-                        </label>
-                      ))
-                    ) : (
-                      <p className="text-gray-500 text-sm py-2">
-                        No team members available
-                      </p>
-                    )}
-                  </div>
-                )}
-                {teamMembersError && (
-                  <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
-                    <span className="flex items-center">
-                      <span className="mr-1"></span>
-                      {teamMembersError}
-                    </span>
-                    <button
-                      onClick={fetchTeamMembers}
-                      className="ml-1 text-red-700 underline hover:text-red-800 transition-colors duration-150"
-                    >
-                      Retry
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div>
-                <label className="block font-semibold text-gray-800 mb-2">
-                  Do you want to add Team Members?
-                </label>
-                <Menu as="div" className="relative">
-                  <MenuButton className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400 transition-all duration-200">
-                    <span className="text-gray-900">
-                      {formData.addTeamMembers}
-                    </span>
-                    <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-                  </MenuButton>
-                  <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
-                    {addTeamMembersOptions.map((option) => (
-                      <MenuItem key={option}>
-                        {({ active }) => (
-                          <button
-                            onClick={() => handleAddTeamMembersChange(option)}
-                            className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
-                              active
-                                ? "bg-blue-50 text-blue-700"
-                                : "text-gray-900 hover:bg-gray-50"
-                            }`}
-                          >
-                            {option}
-                          </button>
-                        )}
-                      </MenuItem>
-                    ))}
-                  </MenuItems>
-                </Menu>
-              </div>
-            </div>
+  <div className="lg:col-span-1 xl:col-span-1 relative">
+    <label className="block font-semibold text-gray-800 mb-2">
+      Team Members
+      {loadingTeamMembers && (
+        <Loader className="inline ml-2 animate-spin" size={16} />
+      )}
+    </label>
+    <button
+      type="button"
+      onClick={() => setShowTeamMembersDropdown((prev) => !prev)}
+      className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white flex justify-between items-center
+        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400
+        transition-all duration-200"
+    >
+      <span className="text-gray-900">
+        {formData.teamMembers.length > 0
+          ? getSelectedMemberNames()
+          : "Select team members"}
+      </span>
+      <ChevronDownIcon
+        className={`w-5 h-5 text-gray-500 transform transition-transform duration-200
+          ${showTeamMembersDropdown ? "rotate-180" : ""}`}
+      />
+    </button>
+    {showTeamMembersDropdown && (
+      <div className="absolute left-0 right-0 mt-1 border border-gray-200 rounded-lg p-3 max-h-48 overflow-y-auto bg-white shadow-lg z-30">
+        {loadingTeamMembers ? (
+          <div className="flex items-center justify-center py-3">
+            <Loader className="animate-spin" size={20} />
+            <span className="ml-2 text-gray-500 text-sm">
+              Loading team members...
+            </span>
           </div>
+        ) : teamMembersDB.length > 0 ? (
+          teamMembersDB.map((member) => (
+            <label
+              key={member._id || member.id}
+              className="flex items-center space-x-3 py-2 cursor-pointer hover:bg-gray-50 rounded text-sm transition-colors duration-150"
+            >
+              <input
+                type="checkbox"
+                checked={formData.teamMembers.includes(
+                  member._id || member.id
+                )}
+                onChange={() =>
+                  handleTeamMemberToggle(member._id || member.id)
+                }
+                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
+              />
+              <span className="text-gray-900">
+                {member.firstName} {member.lastName}
+              </span>
+            </label>
+          ))
+        ) : (
+          <p className="text-gray-500 text-sm py-2">
+            No team members available
+          </p>
+        )}
+      </div>
+    )}
+    {teamMembersError && (
+      <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+        <span className="flex items-center">
+          <span className="mr-1"></span>
+          {teamMembersError}
+        </span>
+        <button
+          onClick={fetchTeamMembers}
+          className="ml-1 text-red-700 underline hover:text-red-800 transition-colors duration-150"
+        >
+          Retry
+        </button>
+      </div>
+    )}
+  </div>
+
+  <div>
+    <label className="block font-semibold text-gray-800 mb-2">
+      Do you want to add Team Members?
+    </label>
+    <Menu as="div" className="relative">
+      <MenuButton className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white flex justify-between items-center text-left hover:border-gray-400 transition-all duration-200">
+        <span className="text-gray-900">
+          {formData.addTeamMembers}
+        </span>
+        <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+      </MenuButton>
+      <MenuItems className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-auto">
+        {addTeamMembersOptions.map((option) => (
+          <MenuItem key={option}>
+            {({ active }) => (
+              <button
+                onClick={() => handleAddTeamMembersChange(option)}
+                className={`w-full px-4 py-3 text-left text-sm transition-colors duration-150 ${
+                  active
+                    ? "bg-blue-50 text-blue-700"
+                    : "text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                {option}
+              </button>
+            )}
+          </MenuItem>
+        ))}
+      </MenuItems>
+    </Menu>
+  </div>
+</div>
 
           <div className="flex justify-center flex-wrap gap-4 mt-8">
             <button
