@@ -24,47 +24,50 @@ const Navbar = ({ currentPage, onPageChange, projectCount }) => {
                 <Sparkles className="w-5 h-5 text-white" />
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-xl"></div>
               </div>
-              <div className="ml-3">
-                <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+              <div className="ml-3 hidden min-[329px]:block">
+                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
                 Project Management
                 </span>               
               </div>
             </div>
           </div>
-          <div className="hidden md:flex items-center space-x-2">
-  {navigation.map((item) => {
-    const Icon = item.icon;
-    const isActive = currentPage === item.page;
-    return (
-      <button
-        key={item.name}
-        onClick={() => handlePageChange(item.page)}
-        className={`relative flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 overflow-hidden group ${
-          isActive
-            ? 'bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 text-white shadow-2xl shadow-indigo-500/40'
-            : 'bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 text-gray-700 hover:from-gray-200 hover:via-gray-300 hover:to-gray-400 hover:text-gray-900 hover:shadow-xl hover:shadow-gray-500/30'
-        }`}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        <div className="relative flex items-center space-x-2">
-          <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
-            isActive ? 'bg-white/20' : 'bg-gray-600/20'
-          }`}>
-            <Icon size={14} className={`${isActive ? 'text-white' : 'text-gray-600'}`} />
+          
+          {/* Desktop Navigation - Hidden on small devices */}
+          <div className="hidden lg:flex items-center space-x-2">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              const isActive = currentPage === item.page;
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => handlePageChange(item.page)}
+                  className={`relative flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 ease-out hover:-translate-y-1 active:translate-y-0 overflow-hidden group ${
+                    isActive
+                      ? 'bg-gradient-to-r from-indigo-500 via-indigo-600 to-purple-600 text-white shadow-2xl shadow-indigo-500/40'
+                      : 'bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 text-gray-700 hover:from-gray-200 hover:via-gray-300 hover:to-gray-400 hover:text-gray-900 hover:shadow-xl hover:shadow-gray-500/30'
+                  }`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative flex items-center space-x-2">
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                      isActive ? 'bg-white/20' : 'bg-gray-600/20'
+                    }`}>
+                      <Icon size={14} className={`${isActive ? 'text-white' : 'text-gray-600'}`} />
+                    </div>
+                    <span>{item.name}</span>
+                  </div>
+                  {item.page === 'view-projects' && projectCount > 0 && (
+                    <span className="relative bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5 ml-1 shadow-sm">
+                      {projectCount}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
-          <span>{item.name}</span>
-        </div>
-        {item.page === 'view-projects' && projectCount > 0 && (
-          <span className="relative bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-bold rounded-full px-2 py-0.5 ml-1 shadow-sm">
-            {projectCount}
-          </span>
-        )}
-      </button>
-    );
-  })}
-</div>
 
-          <div className="md:hidden flex items-center">
+          {/* Mobile Menu Button - Show on small and medium devices */}
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gray-600 hover:text-gray-900 focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
@@ -75,8 +78,9 @@ const Navbar = ({ currentPage, onPageChange, projectCount }) => {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden animate-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden animate-in slide-in-from-top-2 duration-200">
           <div className="px-4 pt-2 pb-4 space-y-2 bg-white/95 backdrop-blur-md border-t border-gray-100">
             {navigation.map((item) => {
               const Icon = item.icon;

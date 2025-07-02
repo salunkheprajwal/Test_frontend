@@ -240,58 +240,58 @@ const ProjectDisplayPage = () => {
           </table>
         </div>
 
-      {showModal && selectedProject && (
-  <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-2 animate-in fade-in duration-300">
-    <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300">
+        {showModal && selectedProject && (
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-[9999] p-2 sm:p-4 animate-in fade-in duration-300">
+    <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300">
 
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-100 px-4 py-4">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg bg-white border border-gray-200">
-              {selectedProject.companyLogo ? (
-                <img 
-                  src={selectedProject.companyLogo} 
-                  alt={`${selectedProject.companyName} logo`}
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-               
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-              ) : null}
-              <div 
-                className="w-full h-full bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-xl flex items-center justify-center"
-                style={{ display: selectedProject.companyLogo ? 'none' : 'flex' }}
-              >
-                <Building className="h-5 w-5 text-white" />
-              </div>
-            </div>
-          
-            <div>
-              <h2 className="text-lg font-bold text-gray-900">{selectedProject.projectName}</h2>
-              <p className="text-sm text-gray-600 font-medium">{selectedProject.companyName}</p>
-              <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(getProjectStatus(selectedProject.startDate, selectedProject.endDate))}`}>
-                {getProjectStatus(selectedProject.startDate, selectedProject.endDate)}
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowModal(false)}
-            className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg transition-all duration-200"
-          >
-            <X size={18} />
-          </button>
+    <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-100 px-3 sm:px-4 py-2 sm:py-2.5">
+  <div className="flex items-center justify-between">
+    <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden shadow bg-white border border-gray-200 flex-shrink-0">
+        {selectedProject.companyLogo ? (
+          <img 
+            src={selectedProject.companyLogo} 
+            alt={`${selectedProject.companyName} logo`}
+            className="w-full h-full object-contain"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+        ) : null}
+        <div 
+          className="w-full h-full bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-xl flex items-center justify-center"
+          style={{ display: selectedProject.companyLogo ? 'none' : 'flex' }}
+        >
+          <Building className="h-4 w-4 text-white" />
         </div>
       </div>
 
+      <div className="flex items-center gap-2 flex-wrap min-w-0">
+        <h2 className="text-sm sm:text-base font-bold text-gray-900 truncate">{selectedProject.projectName}</h2>
+        <span className="text-xs sm:text-sm text-gray-600 font-medium truncate">{selectedProject.companyName}</span>
+        <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium border ${getStatusColor(getProjectStatus(selectedProject.startDate, selectedProject.endDate))}`}>
+          {getProjectStatus(selectedProject.startDate, selectedProject.endDate)}
+        </span>
+      </div>
+    </div>
 
-      <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-        <div className="grid md:grid-cols-2 gap-4">
+    <button
+      onClick={() => setShowModal(false)}
+      className="p-1 text-gray-400 hover:text-gray-600 hover:bg-white/50 rounded-lg transition-all duration-200 ml-2"
+    >
+      <X size={16} className="sm:w-[18px] sm:h-[18px]" />
+    </button>
+  </div>
+</div>
+
+
+      <div className="p-3 sm:p-6 overflow-y-auto max-h-[calc(95vh-100px)] sm:max-h-[calc(90vh-120px)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           <div className="space-y-4">
             <div>
-              <h3 className="text-md font-semibold text-gray-900 mb-2 flex items-center gap-1.5">
+              <h3 className="text-sm sm:text-md font-semibold text-gray-900 mb-2 flex items-center gap-1.5">
                 <Target className="h-4 w-4 text-blue-600" />
                 Project Info
               </h3>
@@ -305,9 +305,9 @@ const ProjectDisplayPage = () => {
                 }].map((item, i) => (
                   <div key={i} className="flex items-center gap-2 p-2 bg-gray-50 rounded-md">
                     {item.icon}
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="text-xs text-gray-500">{item.label}</p>
-                      <p className="text-sm font-medium text-gray-900">{item.value}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{item.value}</p>
                     </div>
                   </div>
                 ))}
@@ -315,18 +315,17 @@ const ProjectDisplayPage = () => {
             </div>
 
             <div>
-              <h3 className="text-md font-semibold text-gray-900 mb-2 flex items-center gap-1.5">
+              <h3 className="text-sm sm:text-md font-semibold text-gray-900 mb-2 flex items-center gap-1.5">
                 <Clock className="h-4 w-4 text-green-600" />
                 Timeline & Billing
               </h3>
               <div className="space-y-2">
                 <div className="flex items-center gap-2 p-2 bg-green-50 rounded-md border border-green-100">
                   <Calendar className="h-3 w-3 text-green-600" />
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <p className="text-xs text-green-700">Duration</p>
-                    <p className="text-sm font-medium text-green-900">{calculateDuration(selectedProject.startDate, selectedProject.endDate)}</p>
-                          </div>
-                          
+                    <p className="text-sm font-medium text-green-900 truncate">{calculateDuration(selectedProject.startDate, selectedProject.endDate)}</p>
+                  </div>
                 </div>
                
                 <div className="grid grid-cols-2 gap-2">
@@ -343,9 +342,8 @@ const ProjectDisplayPage = () => {
             </div>
           </div>
 
-
           <div>
-            <h3 className="text-md font-semibold text-gray-900 mb-2 flex items-center gap-1.5">
+            <h3 className="text-sm sm:text-md font-semibold text-gray-900 mb-2 flex items-center gap-1.5">
               <Users className="h-4 w-4 text-purple-600" />
               Team Members
               <span className="ml-2 px-1.5 py-0.5 bg-purple-100 text-purple-700 text-[10px] rounded-full font-medium">
@@ -353,23 +351,23 @@ const ProjectDisplayPage = () => {
               </span>
             </h3>
             {selectedProject.teamMembers?.length ? (
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-48 sm:max-h-64 overflow-y-auto">
                 {selectedProject.teamMembers.map((member, index) => (
-                  <div key={member.id} className="flex items-center gap-2 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-md border border-purple-100">
-                    <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+                  <div key={member.id} className="flex items-center gap-2 p-2 sm:p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-md border border-purple-100">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-[10px] sm:text-xs flex-shrink-0">
                       {member.fullName.split(' ').map(n => n[0]).join('').toUpperCase()}
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">{member.fullName}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{member.fullName}</p>
                       <p className="text-xs text-gray-600">Team Member #{index + 1}</p>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-2">
-                  <Users className="h-6 w-6 text-gray-400" />
+              <div className="flex flex-col items-center justify-center py-6 sm:py-8 text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-full flex items-center justify-center mb-2">
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400" />
                 </div>
                 <p className="text-sm text-gray-500">No team members assigned</p>
                 <p className="text-xs text-gray-400">They will appear once added</p>
