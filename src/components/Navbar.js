@@ -32,7 +32,6 @@ const Navbar = ({ currentPage, onPageChange, projectCount }) => {
             </div>
           </div>
           
-          {/* Desktop Navigation - Hidden on small devices */}
           <div className="hidden lg:flex items-center space-x-2">
             {navigation.map((item) => {
               const Icon = item.icon;
@@ -66,7 +65,6 @@ const Navbar = ({ currentPage, onPageChange, projectCount }) => {
             })}
           </div>
 
-          {/* Mobile Menu Button - Show on small and medium devices */}
           <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -78,7 +76,6 @@ const Navbar = ({ currentPage, onPageChange, projectCount }) => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden animate-in slide-in-from-top-2 duration-200">
           <div className="px-4 pt-2 pb-4 space-y-2 bg-white/95 backdrop-blur-md border-t border-gray-100">
