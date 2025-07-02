@@ -103,12 +103,7 @@ const Navbar = ({ currentPage, onPageChange, projectCount }) => {
               );
             })}
 
-            <div className="pt-3 border-t border-gray-100 mt-2">
-              <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-3 rounded-xl font-semibold text-sm shadow-lg flex items-center justify-center space-x-2 transition-all duration-200">
-                <Plus size={18} />
-                <span>Create New Project</span>
-              </button>
-            </div>
+           
           </div>
         </div>
       )}
