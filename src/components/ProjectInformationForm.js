@@ -88,16 +88,16 @@ const [logoPreview, setLogoPreview] = useState('');
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.clientCode.trim()) newErrors.clientCode = 'Client Code is required';
-    if (!formData.companyName.trim()) newErrors.companyName = 'Company Name is required';
-    if (!formData.projectName.trim()) newErrors.projectName = 'Project Name is required';
+    if (!formData.clientCode?.trim()) newErrors.clientCode = 'Client Code is required';
+    if (!formData.companyName?.trim()) newErrors.companyName = 'Company Name is required';
+    if (!formData.projectName?.trim()) newErrors.projectName = 'Project Name is required';
     if (!formData.startDate) newErrors.startDate = 'Start Date is required';
     if (!formData.endDate) newErrors.endDate = 'End Date is required';
-    if (!formData.allottedBillingHours.trim()) newErrors.allottedBillingHours = 'Allotted Billing Hours is required';
+    if (!formData.allottedBillingHours?.trim()) newErrors.allottedBillingHours = 'Allotted Billing Hours is required';
     else if (isNaN(formData.allottedBillingHours) || parseFloat(formData.allottedBillingHours) <= 0) {
       newErrors.allottedBillingHours = 'Please enter a valid number greater than 0';
     }
-    if (!formData.department.trim()) newErrors.department = 'Department is required';
+    if (!formData.department?.trim()) newErrors.department = 'Department is required';
 
     if (formData.startDate && formData.endDate) {
       if (new Date(formData.startDate) >= new Date(formData.endDate)) {
@@ -142,8 +142,8 @@ const [logoPreview, setLogoPreview] = useState('');
       const member = newMembers[i];
       const memberErrors = {};
       
-      if (!member.firstName.trim()) memberErrors.firstName = `Member ${i + 1}: First Name is required`;
-      if (!member.lastName.trim()) memberErrors.lastName = `Member ${i + 1}: Last Name is required`;
+      if (!member.firstName?.trim()) memberErrors.firstName = `Member ${i + 1}: First Name is required`;
+      if (!member.lastName?.trim()) memberErrors.lastName = `Member ${i + 1}: Last Name is required`;
       
       const fullName = `${member.firstName.toLowerCase()}_${member.lastName.toLowerCase()}`;
       if (duplicateCheck.has(fullName)) {
@@ -176,10 +176,10 @@ const [logoPreview, setLogoPreview] = useState('');
     setIsAddingMember(true);
     try {
       const membersData = newMembers
-        .filter(member => member.firstName.trim() && member.lastName.trim())
+        .filter(member => member.firstName?.trim() && member.lastName?.trim())
         .map(member => ({
-          firstName: member.firstName.trim(),
-          lastName: member.lastName.trim(),
+          firstName: member.firstName?.trim(),
+          lastName: member.lastName?.trim(),
         }));
 
       const response = await axios.post(`${baseURL}/team-members/batch`, { members: membersData });
@@ -318,7 +318,7 @@ const handleLogoUpload = (e) => {
   };
 
   const handleClose = () => {
-    if (Object.values(formData).some(value => Array.isArray(value) ? value.length > 0 : value.trim() !== '')) {
+    if (Object.values(formData).some(value => Array.isArray(value) ? value.length > 0 : value?.trim() !== '')) {
       if (window.confirm('Are you sure you want to close? All unsaved changes will be lost.')) {
         handleClear();
       }
